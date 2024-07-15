@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .calculator {
+            width: 400px;
+            height: 600px;
+            background-color: #333;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        
+        .display {
+            background-color: #444;
+            color: #fff;
+            text-align: right;
+            padding: 20px;
+            font-size: 2.5em;
+            height: 100px;
+            box-sizing: border-box;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 1px;
+            background-color: #222;
+            height: calc(100% - 100px);
+        }
+        
+        .btn {
+            background-color: #666;
+            border: none;
+            padding: 20px;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #555;
+        }
+        
+        .operator {
+            background-color: #ff9500;
+        }
+        
+        .operator:hover {
+            background-color: #cc7700;
+        }
+        
+        .equals {
+            background-color: #009688;
+            grid-row: span 2;
+        }
+        
+        .equals:hover {
+            background-color: #00796b;
+        }
+        
+        .number {
+            background-color: #333;
+        }
+        
+        .number:hover {
+            background-color: #444;
+        }
+        
+        .zero {
+            grid-column: span 2;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="btn" id="clear">C</button>
+            <button class="btn" id="backspace">←</button>
+            <button class="btn operator" id="divide">/</button>
+            <button class="btn operator" id="multiply">*</button>
+            <button class="btn number" id="7">7</button>
+            <button class="btn number" id="8">8</button>
+            <button class="btn number" id="9">9</button>
+            <button class="btn operator" id="subtract">-</button>
+            <button class="btn number" id="4">4</button>
+            <button class="btn number" id="5">5</button>
+            <button class="btn number" id="6">6</button>
+            <button class="btn operator" id="add">+</button>
+            <button class="btn number" id="1">1</button>
+            <button class="btn number" id="2">2</button>
+            <button class="btn number" id="3">3</button>
+            <button class="btn equals" id="equals">=</button>
+            <button class="btn number zero" id="0">0</button>
+            <button class="btn number" id="dot">.</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const display = document.getElementById('display');
+            const buttons = Array.from(document.getElementsByClassName('btn'));
+
+            buttons.map(button => {
+                button.addEventListener('click', (e) => {
+                    const value = e.target.id;
+
+                    switch (value) {
+                        case 'clear':
+                            display.innerText = '0';
+                            break;
+                        case 'backspace':
+                            if (display.innerText.length > 1) {
+                                display.innerText = display.innerText.slice(0, -1);
+                            } else {
+                                display.innerText = '0';
+                            }
+                            break;
+                        case 'equals':
+                            try {
+                                display.innerText = eval(display.innerText);
+                            } catch {
+                                display.innerText = 'Error';
+                            }
+                            break;
+                        case 'add':
+                        case 'subtract':
+                        case 'multiply':
+                        case 'divide':
+                            if (!['+', '-', '*', '/'].includes(display.innerText.slice(-1))) {
+                                display.innerText += e.target.innerText;
+                            }
+                            break;
+                        case 'dot':
+                            if (!display.innerText.includes('.')) {
+                                display.innerText += '.';
+                            }
+                            break;
+                        default:
+                            if (display.innerText === '0') {
+                                display.innerText = e.target.innerText;
+                            } else {
+                                display.innerText += e.target.innerText;
+                            }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
